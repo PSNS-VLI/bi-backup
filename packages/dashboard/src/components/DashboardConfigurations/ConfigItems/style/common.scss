@@ -1,0 +1,68 @@
+.bi-config {
+  --bi-config-min-height: 32px;
+  --bi-config-checkbox-size: 12px;
+  --bi-config-label-offset: 8px;
+
+  --bi-config-form-item-gap: 8px;
+  --bi-config-form-item-height: 24px;
+
+  --bi-config-nest-item-padding-left: #{calc(
+      var(--bi-config-checkbox-size) + var(--bi-config-label-offset)
+    )};
+
+  min-height: var(--bi-config-min-height);
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: var(--bi-config-nest-item-padding-left);
+
+    .el-input {
+      --el-input-height: var(--bi-config-form-item-height);
+    }
+
+    .el-input-number {
+      width: auto;
+      line-height: normal;
+
+      &.is-controls-right .el-input-number__decrease,
+      &.is-controls-right .el-input-number__increase {
+        --el-input-number-controls-height: calc(var(--bi-config-form-item-height) / 2);
+      }
+    }
+
+    .el-select__wrapper {
+      min-height: var(--bi-config-form-item-height);
+    }
+
+    .el-color-picker__trigger {
+      width: var(--bi-config-form-item-height);
+      height: var(--bi-config-form-item-height);
+    }
+  }
+
+  &-item--collapse {
+    padding-left: 0;
+  }
+
+  &--inline {
+    display: flex;
+
+    .bi-config-item {
+      flex: 1;
+      padding-left: 8px;
+    }
+
+    &.bi-config--without-label {
+      .bi-config-item {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .bi-config-label {
+    flex-shrink: 0;
+    height: var(--bi-config-min-height);
+  }
+}

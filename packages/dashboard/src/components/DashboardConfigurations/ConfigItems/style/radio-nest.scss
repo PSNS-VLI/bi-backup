@@ -1,0 +1,11 @@
+@use './common.scss';
+
+.bi-config-radio-group-nest {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & > .bi-config-item {
+    padding-left: 0;
+  }
+}

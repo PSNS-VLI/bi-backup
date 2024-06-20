@@ -1,0 +1,9 @@
+@mixin gx-input {
+  height: 100%;
+  --el-input-bg-color: #fff;
+  --el-input-text-color: #303133;
+  --el-input-border-color: #dcdfe6;
+  --el-input-hover-border-color: #dcdfe6;
+  --el-input-focus-border-color: #dcdfe6;
+  --el-font-size-base: 14px;
+}

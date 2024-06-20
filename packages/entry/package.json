@@ -1,0 +1,40 @@
+{
+  "name": "@bi/entry",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^0.26.0",
+    "crypto-js": "^4.2.0",
+    "echarts": "^5.3.3",
+    "echarts-gl": "^2.0.9",
+    "element-plus": "^2.5.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "monaco-editor": "^0.24.0",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.7",
+    "sql-formatter": "^2.3.3",
+    "store": "^2.0.12",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5",
+    "vue-tree-jf": "^1.0.10"
+  },
+  "buildOptions": {
+    "entry": true,
+    "viteOptions": {
+      "css": {
+        "preprocessorOptions": {
+          "scss": {
+            "additionalData": "@use \"@/assets/style/theme.scss\" as *;"
+          }
+        }
+      }
+    },
+    "api": {
+      "swaggerApi": "http://192.168.31.98:8620/v3/api-docs",
+      "swaggerVersion": "SwaggerV3",
+      "outDir": "./src/api"
+    }
+  }
+}

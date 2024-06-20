@@ -1,0 +1,26 @@
+@use './font.scss' as *;
+@use './nprogress.scss' as *;
+@use './theme.scss' as *;
+@use '@gxhs/ui/GxIcon/style/icon.scss';
+
+div,
+span {
+  box-sizing: border-box;
+}
+
+span,
+i {
+  display: inline-block;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}

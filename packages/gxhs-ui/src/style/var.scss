@@ -1,0 +1,43 @@
+$blue: #2468f2;
+
+:root {
+  // element
+  --el-color-primary: #{$blue} !important;
+
+  // gxhs-ui
+  --gx-hover-bg-color: rgba(0, 0, 0, 0.04);
+
+  // gx-dropdown-menu
+  --gx-dropdown-menu-active-color: inherit;
+  --gx-dropdown-menu-text-color: inherit;
+  --gx-dropdown-menu-hover-text-color: inherit;
+  --gx-dropdown-menu-bg-color: inherit;
+  --gx-dropdown-menu-hover-bg-color: inherit;
+  --gx-dropdown-menu-item-height: 36px;
+  --gx-dropdown-menu-sub-item-height: var(--gx-dropdown-menu-item-height);
+  --gx-dropdown-menu-horizontal-height: 60px;
+  --gx-dropdown-menu-horizontal-sub-item-height: 36px;
+  --gx-dropdown-menu-item-font-size: var(--el-font-size-base);
+  --gx-dropdown-menu-item-hover-fill: inherit;
+  --gx-dropdown-menu-border-color: var(--el-border-color);
+  --gx-dropdown-menu-base-level-padding: 10px;
+  --gx-dropdown-menu-level-padding: 20px;
+  --gx-dropdown-menu-icon-width: 0px;
+
+  // gx-dropdown-menu override el-menu
+  --el-menu-active-color: var(--gx-dropdown-menu-active-color);
+  --el-menu-text-color: var(--gx-dropdown-menu-text-color);
+  --el-menu-hover-text-color: var(--gx-dropdown-menu-hover-text-color);
+  --el-menu-bg-color: var(--gx-dropdown-menu-bg-color);
+  --el-menu-hover-bg-color: var(--gx-dropdown-menu-hover-bg-color);
+  --el-menu-item-height: var(--gx-dropdown-menu-item-height);
+  --el-menu-sub-item-height: var(--gx-dropdown-menu-sub-item-height);
+  --el-menu-horizontal-height: var(--gx-dropdown-menu-horizontal-height);
+  --el-menu-horizontal-sub-item-height: var(--gx-dropdown-menu-horizontal-sub-item-height);
+  --el-menu-item-font-size: var(--gx-dropdown-menu-item-font-size);
+  --el-menu-item-hover-fill: var(--gx-dropdown-menu-item-hover-fill);
+  --el-menu-border-color: var(--gx-dropdown-menu-border-color);
+  --el-menu-base-level-padding: var(--gx-dropdown-menu-base-level-padding);
+  --el-menu-level-padding: var(--gx-dropdown-menu-level-padding);
+  --el-menu-icon-width: var(--gx-dropdown-menu-icon-width);
+}

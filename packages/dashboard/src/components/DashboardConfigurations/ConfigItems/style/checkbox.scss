@@ -1,0 +1,10 @@
+@use './common.scss';
+
+.bi-config-item {
+  .el-checkbox {
+    --el-checkbox-input-width: var(--bi-config-checkbox-size);
+    --el-checkbox-input-height: var(--bi-config-checkbox-size);
+
+    margin-right: var(--bi-config-form-item-gap);
+  }
+}

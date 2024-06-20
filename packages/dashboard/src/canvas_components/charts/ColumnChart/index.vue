@@ -1,0 +1,226 @@
+<!-- 条形图 -->
+<template>
+  <div>
+    <div :id="containerID" :style="containerStyle"></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  ChartName,
+  useChart,
+  groupChartDataByFields,
+  type ChartProps,
+  getDataTagConfigKeyMap,
+  getDataTagConfigData,
+  getTooltipConfigData,
+  getTextConfigData,
+  customToolTip,
+  type Field
+} from '../../shortcut'
+
+import {
+  componentID,
+  setChartConfigData,
+  chartConfigKey,
+  seriesConfigTextKey,
+  tooltipConfigStyleTextStyleWrapperKey
+} from './config'
+
+defineOptions({
+  name: ChartName.COLUMN_CHART
+})
+const props = withDefaults(defineProps<ChartProps>(), {})
+
+const valueY = ref('')
+const computedData = ref()
+const measurementsLength = ref()
+const max = ref()
+const textAlign = ref()
+const dx = ref()
+
+let transformY = { type: 'stackY' }
+let labelTotal = { text: (data) => {}, textAlign: textAlign.value, dx: dx.value }
+
+const { containerID, containerStyle, provideData, loadData } = useChart(props, {
+  componentID,
+  callback: {
+    // 初始化图表
+    initChart: (chart) => {
+      chart.coordinate({ transform: [{ type: 'transpose' }] }).transform({ type: 'dodgeX' })
+      chart.render()
+      const mark = chart.interval()
+      // mark.transform(transformY)
+      mark.label([labelTotal]).data([])
+      return mark
+    },
+
+    // 渲染图表（点更新按钮）
+    updateChart: async (mark, store) => {
+      const dimensions = store?.fields?.dimensions as Field[]
+      const measurements = store?.fields?.measurements as Field[]
+      const legends = store?.fields?.legends as Field[]
+      const tooltips = store?.fields?.tooltips as Field[]
+      measurementsLength.value = measurements?.length
+
+      if (dimensions?.length && measurements?.length) {
+        const originChartData = await loadData(dimensions.concat(measurements, legends, tooltips))
+        const { classKey, valueKey, colorKey, chartData } = groupChartDataByFields(
+          originChartData,
+          dimensions,
+          measurements,
+          legends,
+          {
+            calculatedPercent: true,
+            stringNumberConvert: true,
+            percentPrecision: 0
+          }
+        )
+        valueY.value = valueKey
+        computedData.value = chartData
+        mark.encode({ x: classKey, y: valueKey, color: colorKey }).changeData(chartData)
+        provideData(originChartData)
+
+        max.value = computedData.value.reduce((res, item) => {
+          console.log(item)
+          console.log(valueKey)
+          return Math.max(res, item[valueKey])
+        }, 0)
+
+        dx.value = (d) => (d[valueY.value] > max.value * 0.96 ? -5 : 5)
+        textAlign.value = (d) => (d[valueY.value] > max.value * 0.96 ? 'right' : 'start')
+        labelTotal.textAlign = textAlign.value
+        labelTotal.dx = dx.value
+        console.log(max.value * 0.96)
+      }
+    },
+
+    // 更新图表数据（配置样式）
+    updateStore: (mark, store) => {
+      setChartConfigData(mark, store)
+      drawConfigChange(mark, store)
+      dataTagConfigChange(store)
+      tooltipConfigChange(mark, store)
+      seriesConfigChange(store)
+    }
+  }
+})
+
+// 绘图区域
+const drawConfigChange = (mark, store) => {
+  const drawConfig = store.styles?.[chartConfigKey.drawConfig]
+  // 可视化图表切换
+  const drawConfigChartType = drawConfig?.[chartConfigKey.drawConfigChartType]
+  // 复选框 堆积
+  const drawConfigStacking = drawConfig?.[chartConfigKey.drawConfigStacking]
+  // 复选框 百分比堆积
+  const drawConfigPercentage = drawConfig?.[chartConfigKey.drawConfigPercentage]
+
+  // 可视化图表切换
+  if (drawConfigPercentage || drawConfigChartType === 'percentage') {
+    // 百分比堆积
+    transformY.type = 'normalizeY'
+    mark.axis('y', { labelFormatter: '.0%' })
+  } else if (drawConfigStacking || drawConfigChartType === 'stacking') {
+    // 堆积
+    transformY.type = 'stackY'
+  } else {
+    // 柱状图
+    transformY.type = 'dodgeX'
+  }
+}
+
+// 数据标签
+const dataTagConfigChange = (store) => {
+  const dataTagConfigKey = getDataTagConfigKeyMap('dataTagConfigStyle')
+  // 数据标签 - 内容
+  const dataTagContent =
+    store.styles?.['dataTagConfigStyle']?.[dataTagConfigKey.dataTagConfigContent]
+  const labelConfig = getDataTagConfigData('dataTagConfigStyle', store.styles)
+
+  const { position, ...rest } = labelConfig
+  if (!dataTagContent) {
+    labelTotal.text = (data) => data[valueY.value]
+    if (position === 'top-out') {
+      Object.assign(labelTotal, rest)
+      labelTotal['position'] = undefined
+      labelTotal.textAlign = textAlign.value
+      labelTotal.dx = dx.value
+    } else {
+      Object.assign(labelTotal, labelConfig)
+      labelTotal.textAlign = undefined
+      labelTotal.dx = 0
+    }
+  } else {
+    labelTotal.text = (data) => ''
+  }
+
+  // 条形图没有 content，其他两个有。当切换为 堆积/百分比 时，要向 children push content。（未完成）
+
+  // 全量显示
+  // 修改 .transform =  []    放在 if 判断里 修改了但不生效
+  // 修改 .text =  ''         就不会
+  const dataTagFullDisplay =
+    store.styles?.['dataTagConfigStyle']?.[dataTagConfigKey.dataTagConfigFullDisplay]
+  // labelValue.transform = !dataTagFullDisplay ? [{ type: 'overflowHide' }] : []
+}
+
+// 工具提示
+const tooltipConfigChange = (mark, store) => {
+  const { tooltipDisplayContent } = getTooltipConfigData(
+    tooltipConfigStyleTextStyleWrapperKey,
+    store.styles,
+    mark
+  )
+  customToolTip(mark, store, computedData.value, tooltipDisplayContent)
+}
+
+// 系列设置
+const seriesConfigChange = (store) => {
+  const seriesConfig = store.styles?.[chartConfigKey.seriesConfig]
+  // 系列设置-数据标签
+  const seriesConfigLabel = seriesConfig?.['keymap_wrapper']
+  const seriesLabel = seriesConfigLabel?.[Object.keys(seriesConfigLabel)[0]]
+  // 数据标签
+  const seriesConfigDataTag = seriesLabel?.[chartConfigKey.seriesConfigDataTag]
+  // 显示
+  const seriesConfigShowDataTag = seriesConfigDataTag?.[chartConfigKey.seriesConfigShowDataTag]
+  // 位置
+  const seriesPosition = seriesConfigDataTag?.[chartConfigKey.seriesConfigDataTagPosition]
+  // 文本
+  const { color, fontSize, fontWeight, fontStyle } = getTextConfigData(
+    seriesConfigTextKey,
+    seriesConfigDataTag
+  )
+  // 总计
+  if (seriesConfigShowDataTag) {
+    labelTotal['fill'] = color
+    labelTotal['fontSize'] = fontSize
+    labelTotal['position'] = seriesPosition
+    labelTotal['fontWeight'] = fontWeight
+    labelTotal['fontStyle'] = fontStyle
+
+    if (seriesPosition === 'top-out') {
+      labelTotal['position'] = undefined
+      labelTotal.textAlign = textAlign.value
+      labelTotal.dx = dx.value
+    } else {
+      labelTotal['position'] = seriesPosition
+      labelTotal.textAlign = undefined
+      labelTotal.dx = 0
+    }
+
+    labelTotal.text = (data) => {
+      if (data.__BI_COLOR_KEY__ === Object.keys(seriesConfigLabel)[0]) {
+        return data[valueY.value]
+      } else {
+        return ''
+      }
+    }
+  }
+  // 切换标签 清空之前的 ？
+}
+</script>
+
+<style lang="scss" scoped></style>

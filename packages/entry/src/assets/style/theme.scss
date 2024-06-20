@@ -1,0 +1,80 @@
+@forward '@gxhs/ui/style/utils.scss';
+
+/* 页面主题色 */
+$theme-text-color: #2f64ce;
+
+/* 页面辅助色 */
+$theme-complementary-color: #2468f2;
+//警告色
+$warn-color: #ff3e3e;
+
+/* 文本颜色 */
+//用于重要文字、标题文字、重要按钮文字
+$main-text-color: #ffffff;
+//用于标题文字、输入框标题文字
+$title-text-color: #ffffffd9;
+//返回等次要文字、表单默认图标颜色
+$secondary-text-color: #303133;
+//搜索框待输入
+$hint-text-color: #ffffff73;
+//大标题
+$main-title-size: size(40);
+//小标题
+$second-title-size: size(16);
+//正文
+$normal-text-size: size(14);
+
+@mixin typo-text {
+  font-family: 'SourceHanSansCN Regular';
+  font-size: size(32);
+}
+@mixin regular-text {
+  font-family: 'SourceHanSansCN Regular';
+  font-size: size(16);
+}
+@mixin normal-text {
+  font-family: 'SourceHanSansCN Regular';
+  font-size: size(18);
+}
+@mixin plain-text {
+  font-family: 'SourceHanSansCN Regular';
+  font-size: size(14);
+}
+
+@mixin second-text {
+  font-family: 'SourceHanSansCN Regular';
+  font-size: size(12);
+}
+
+/* input */
+//用于输入框填充
+$input-fill-color: #fff;
+//用于输入框描边
+$input-border-color: #dcdfe6;
+
+/* button */
+//主要按钮背景
+$main-button-color: #2468f2;
+//悬浮按钮背景
+$hover-button-color: #7ca4f7;
+//点击按钮背景
+$click-button-color: #2f64ce;
+
+/* 弹窗样式 */
+//弹窗遮罩
+$modal-color: rgba(34, 47, 72, 0.6);
+//弹窗背景色
+$dialog-color: #fff;
+
+/*icon*/
+//mysql图标颜色
+$icon-mysql-color: #3480af;
+//文件上传图标颜色
+$icon-uploadfiles-color: #67c23a;
+// SQL Server图标颜色
+$icon-sqlserver-color: #2468f2;
+// API数据图标颜色
+$icon-api-color: #5e4eff;
+
+//文字颜色
+$upfile-text-color: #a8abb2;

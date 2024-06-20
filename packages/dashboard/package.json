@@ -1,0 +1,13 @@
+{
+  "name": "@bi/dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@antv/g2": "^5.1.20"
+  },
+  "peerDependencies": {
+    "element-plus": "^2.5.0",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5"
+  }
+}

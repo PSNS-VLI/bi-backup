@@ -1,0 +1,37 @@
+@use './radio-icon.scss' as *;
+
+.bi-config-radio-tab {
+  @include hideElRadio();
+
+  --bi-config-form-item-gap: 0;
+
+  .el-radio {
+    border: 1px solid var(--bi-border-color-base, #d9d9d9);
+
+    &.is-checked {
+      background: var(--bi-color-surface-hovereffect, rgba(0, 0, 0, 0.04));
+
+      .el-radio__label {
+        color: var(--bi-color-font-primary, rgba(0, 0, 0, 0.85));
+      }
+    }
+  }
+
+  .el-radio + .el-radio {
+    border-left: none;
+  }
+
+  .el-radio__label {
+    padding-right: 8px;
+  }
+
+  .el-radio:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .el-radio:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@gxhs/ui",
+  "description": "The components of ElementPlus are repackaged for the front-end requirements of GXHS Company",
+  "private": false,
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "element-plus": "^2.5.0",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5"
+  }
+}

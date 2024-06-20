@@ -1,0 +1,10 @@
+@use './common.scss';
+
+.bi-config-radio-group {
+  .el-radio {
+    --el-radio-input-height: var(--bi-config-checkbox-size);
+    --el-radio-input-width: var(--bi-config-checkbox-size);
+
+    margin-right: var(--bi-config-form-item-gap);
+  }
+}
